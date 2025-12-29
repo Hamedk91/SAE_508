@@ -17,7 +17,7 @@ public class SessionFormationController {
         this.sessionRepository = sessionRepository;
     }
 
-    // 🔹 Sessions pour une formation
+    // 🔹 Récupérer toutes les sessions pour une formation
     @GetMapping("/formation/{formationId}")
     public List<SessionFormation> getSessionsByFormation(@PathVariable Long formationId) {
         return sessionRepository.findAllByFormation_Id(formationId);
@@ -25,22 +25,26 @@ public class SessionFormationController {
 
     // 🔹 Ajouter une session
     @PostMapping
-    public SessionFormation addSession(@RequestBody SessionFormation s) {
-        // Spring Boot convertira correctement les dates ISO et les Integer
-        return sessionRepository.save(s);
+    public SessionFormation addSession(@RequestBody SessionFormation session) {
+        // Spring Boot convertira automatiquement les dates ISO
+        return sessionRepository.save(session);
     }
 
     // 🔹 Modifier une session
     @PutMapping("/{id}")
-    public SessionFormation updateSession(@PathVariable Long id, @RequestBody SessionFormation s) {
-        SessionFormation existing = sessionRepository.findById(id).orElseThrow();
-        existing.setLieu(s.getLieu());
-        existing.setDateDebut(s.getDateDebut());
-        existing.setDateFin(s.getDateFin());
-        existing.setPlacesMax(s.getPlacesMax());
-        existing.setPlacesRestantes(s.getPlacesRestantes());
-        existing.setStatut(s.getStatut());
-        existing.setFormation(s.getFormation());
+    public SessionFormation updateSession(@PathVariable Long id, @RequestBody SessionFormation session) {
+        SessionFormation existing = sessionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Session non trouvée avec id " + id));
+
+        existing.setLieu(session.getLieu());
+        existing.setDateDebut(session.getDateDebut());
+        existing.setDateFin(session.getDateFin());
+        existing.setPlacesMax(session.getPlacesMax());
+        existing.setPlacesRestantes(session.getPlacesRestantes());
+        existing.setStatut(session.getStatut());
+        existing.setFormation(session.getFormation());
+        existing.setFormateur(session.getFormateur()); // inclut le formateur
+
         return sessionRepository.save(existing);
     }
 
