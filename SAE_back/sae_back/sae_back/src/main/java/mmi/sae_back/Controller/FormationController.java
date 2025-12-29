@@ -17,15 +17,38 @@ public class FormationController {
         this.formationRepository = formationRepository;
     }
 
-    // 🔹 Toutes les formations
+    // GET : toutes les formations
     @GetMapping
     public List<Formation> getAllFormations() {
         return formationRepository.findAll();
     }
 
-    // 🔹 Formations par catégorie
+    // GET : formations par catégorie
     @GetMapping("/categorie/{id}")
     public List<Formation> getFormationsByCategorie(@PathVariable Long id) {
         return formationRepository.findByCategorie_Id(id);
+    }
+
+    // POST : ajouter une formation
+    @PostMapping
+    public Formation addFormation(@RequestBody Formation f) {
+        return formationRepository.save(f);
+    }
+
+    // PUT : modifier une formation
+    @PutMapping("/{id}")
+    public Formation updateFormation(@PathVariable Long id, @RequestBody Formation f) {
+        Formation existing = formationRepository.findById(id).orElseThrow();
+        existing.setTitre(f.getTitre());
+        existing.setDuree(f.getDuree());
+        existing.setPrix(f.getPrix());
+        existing.setCategorie(f.getCategorie());
+        return formationRepository.save(existing);
+    }
+
+    // DELETE : supprimer une formation
+    @DeleteMapping("/{id}")
+    public void deleteFormation(@PathVariable Long id) {
+        formationRepository.deleteById(id);
     }
 }
