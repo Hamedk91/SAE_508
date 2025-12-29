@@ -1,0 +1,29 @@
+/* Assurez-vous que tout prend 100% */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Conteneur principal de l'app */
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dashboard prend toute la hauteur */
+.dashboard-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Le contenu principal remplit l'espace */
+.main-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

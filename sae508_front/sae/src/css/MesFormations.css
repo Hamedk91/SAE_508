@@ -1,0 +1,108 @@
+.mes-sessions-page {
+  min-height: calc(100vh - 80px);
+  background: linear-gradient(135deg, #fce7f3 0%, #dbeafe 50%, #cffafe 100%);
+  padding: 60px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.mes-sessions-page h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1f2937;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.sections-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.formation-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.formation-card:hover {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
+}
+
+.formation-card-image {
+  width: 100%;
+  height: 180px;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 180"><rect fill="%231f2937" width="400" height="180"/><text x="50%" y="50%" fill="white" font-size="48" text-anchor="middle" dy=".3em">💻</text></svg>') no-repeat center;
+  background-size: cover;
+}
+
+.formation-card-content {
+  padding: 24px;
+}
+
+.formation-category {
+  display: inline-block;
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.formation-card h4 {
+  font-size: 1.375rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.formation-card p {
+  font-size: 0.95rem;
+  color: #6b7280;
+  line-height: 1.6;
+  min-height: 60px;
+}
+
+.session-item {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.delete-button {
+  margin-top: 10px;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-button:hover {
+  background-color: #b91c1c;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .sections-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .mes-sessions-page {
+    padding: 24px;
+  }
+  .sections-grid {
+    grid-template-columns: 1fr;
+  }
+}

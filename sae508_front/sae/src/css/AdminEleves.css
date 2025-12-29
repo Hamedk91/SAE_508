@@ -1,0 +1,95 @@
+.admin-eleves-page {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #d9d9d9;
+  padding: 32px;
+}
+
+/* HEADER */
+.admin-eleves-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.admin-eleves-header h2 {
+  font-size: 28px;
+  color: #004aad;
+}
+
+.admin-add-eleve-button {
+  background: #f7931e;
+  color: white;
+  border: none;
+  padding: 14px 26px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* TABLE */
+.admin-table-container {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  background: #004aad;
+  color: white;
+  padding: 14px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.admin-table td {
+  padding: 14px;
+  border-bottom: 1px solid #d9d9d9;
+  font-size: 14px;
+}
+
+/* STATUS */
+.admin-status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.admin-status-actif {
+  background: #e6f9f0;
+  color: #1e9b5c;
+}
+
+.admin-status-inactif {
+  background: #fdecea;
+  color: #fe7062;
+}
+
+/* ACTIONS */
+.admin-table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-action-button {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.admin-action-modifier {
+  background: #00aeef;
+  color: white;
+}
+
+.admin-action-supprimer {
+  background: #fe7062;
+  color: white;
+}

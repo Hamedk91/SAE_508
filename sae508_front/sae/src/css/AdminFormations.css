@@ -1,0 +1,67 @@
+.admin-formations-page {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #d9d9d9;
+  padding: 32px;
+}
+
+.admin-formations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.admin-formations-header h2 {
+  font-size: 28px;
+  color: #004aad;
+}
+
+.admin-add-button {
+  background: #f7931e;
+  color: white;
+  border: none;
+  padding: 14px 26px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* CARDS */
+.admin-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.admin-formation-card {
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.admin-formation-card h3 {
+  color: #004aad;
+  margin-bottom: 12px;
+}
+
+.admin-card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.admin-edit-button {
+  background: #00aeef;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+}
+
+.admin-delete-button {
+  background: #fe7062;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+}

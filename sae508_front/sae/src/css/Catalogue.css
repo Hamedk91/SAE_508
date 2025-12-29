@@ -1,0 +1,121 @@
+.catalogue-page,
+.formation-detail-page {
+  min-height: 100vh;
+  background: #f8f9fb;
+  padding: 60px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* TITRES */
+h2 {
+  color: #004aad;
+  font-size: 48px;
+  margin-bottom: 40px;
+}
+
+h3 {
+  color: #004aad;
+  font-size: 32px;
+}
+
+/* BOUTON */
+.back-button {
+  background: #004aad;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+/* CATÉGORIES */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.category-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  cursor: pointer;
+  text-align: center;
+}
+
+/* FORMATIONS */
+.formations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.formation-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+
+.formation-card-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+
+.formation-card-content {
+  padding: 20px;
+}
+
+/* PAGE DÉTAIL */
+.formation-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  margin-bottom: 40px;
+}
+
+.formation-image-large {
+  height: 350px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+}
+
+/* TABLE */
+.sessions-section {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+}
+
+.sessions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sessions-table th,
+.sessions-table td {
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.sessions-table button {
+  background: #f7931e;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.sessions-table button:disabled {
+  background: #d9d9d9;
+  cursor: not-allowed;
+}

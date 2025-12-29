@@ -1,0 +1,78 @@
+.admin-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #f8f9fb;
+  font-family: "Poppins", sans-serif;
+}
+
+/* SIDEBAR */
+.admin-sidebar {
+  width: 260px;
+  background: #ffffff;
+  border-right: 1px solid #d9d9d9;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 20px;
+}
+
+.admin-sidebar-logo {
+  font-size: 32px;
+  font-weight: 800;
+  color: #004aad;
+  margin-bottom: 60px;
+}
+
+.admin-sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-sidebar-button {
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #222222;
+  cursor: pointer;
+}
+
+.admin-sidebar-button.active,
+.admin-sidebar-button:hover {
+  background: #e6f0ff;
+  color: #004aad;
+}
+
+.admin-sidebar-logout {
+  margin-top: auto;
+  background: #fe7062;
+  color: white;
+}
+
+/* MAIN */
+.admin-main-content {
+  flex: 1;
+  padding: 48px 64px;
+}
+
+.admin-header {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid #d9d9d9;
+  margin-bottom: 48px;
+}
+
+.admin-header h1 {
+  font-size: 32px;
+  color: #004aad;
+  margin-bottom: 8px;
+}
+
+.admin-header p {
+  font-size: 16px;
+  color: #555;
+}
