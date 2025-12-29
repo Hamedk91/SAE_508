@@ -1,0 +1,19 @@
+# ===== FRONTEND (React) =====
+node_modules/
+build/
+.env
+
+# ===== BACKEND (Spring Boot / Maven) =====
+target/
+.env
+
+# ===== IntelliJ =====
+.idea/
+*.iml
+
+# ===== VS Code =====
+.vscode/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
