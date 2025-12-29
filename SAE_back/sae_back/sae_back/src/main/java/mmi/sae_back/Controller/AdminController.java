@@ -32,55 +32,8 @@ public class AdminController {
     }
 
     // ====================== FORMATEURS ======================
-    @GetMapping("/formateurs")
-    public List<Formateur> getFormateurs() {
-        return formateurRepository.findAll();
-    }
 
-    @PostMapping("/formateurs")
-    public Formateur addFormateur(@RequestBody Formateur f) {
-        return formateurRepository.save(f);
-    }
 
-    @PutMapping("/formateurs/{id}")
-    public Formateur updateFormateur(@PathVariable Long id, @RequestBody Formateur f) {
-        Formateur existing = formateurRepository.findById(id).orElseThrow();
-        existing.setNom(f.getNom());
-        existing.setPrenom(f.getPrenom());
-        existing.setEmail(f.getEmail());
-        return formateurRepository.save(existing);
-    }
-
-    @DeleteMapping("/formateurs/{id}")
-    public void deleteFormateur(@PathVariable Long id) {
-        formateurRepository.deleteById(id);
-    }
-
-    // ====================== FORMATIONS ======================
-    @GetMapping("/formations")
-    public List<Formation> getFormations() {
-        return formationRepository.findAll();
-    }
-
-    @PostMapping("/formations")
-    public Formation addFormation(@RequestBody Formation f) {
-        return formationRepository.save(f);
-    }
-
-    @PutMapping("/formations/{id}")
-    public Formation updateFormation(@PathVariable Long id, @RequestBody Formation f) {
-        Formation existing = formationRepository.findById(id).orElseThrow();
-        existing.setTitre(f.getTitre());
-        existing.setDescription(f.getDescription());
-        existing.setDuree(f.getDuree());
-        existing.setPrix(f.getPrix());
-        return formationRepository.save(existing);
-    }
-
-    @DeleteMapping("/formations/{id}")
-    public void deleteFormation(@PathVariable Long id) {
-        formationRepository.deleteById(id);
-    }
 
     // ====================== UTILISATEURS ======================
     @GetMapping("/utilisateurs")
