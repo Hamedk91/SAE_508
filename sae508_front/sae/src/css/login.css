@@ -1,4 +1,4 @@
-/* Login.css */
+/* login.css - Identique au wireframe */
 
 * {
   margin: 0;
@@ -6,13 +6,17 @@
   box-sizing: border-box;
 }
 
-.login-page {
-  display: flex;
-  min-height: 100vh;
+body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Section gauche - Bleu */
+/* Container principal */
+.login-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Section gauche - Bleu avec logo et slogan */
 .login-left {
   width: 50%;
   background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
@@ -24,19 +28,20 @@
 }
 
 .login-logo {
-  font-size: 3.5rem;
+  font-size: 4rem;
   font-weight: bold;
   margin-bottom: 50px;
+  font-family: 'Courier New', monospace;
 }
 
 .login-slogan {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: bold;
-  line-height: 1.3;
+  line-height: 1.2;
   max-width: 500px;
 }
 
-/* Section droite - Formulaire */
+/* Section droite - Formulaire blanc */
 .login-right {
   width: 50%;
   background: white;
@@ -58,14 +63,18 @@
   color: #1f2937;
   text-align: center;
   margin-bottom: 60px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
+/* Formulaire */
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
+/* Inputs */
 .login-input {
   width: 100%;
   padding: 16px;
@@ -86,6 +95,7 @@
   box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
 }
 
+/* Bouton */
 .login-button {
   width: 100%;
   padding: 16px;
@@ -98,36 +108,46 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(249, 115, 22, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .login-button:hover {
   background: linear-gradient(90deg, #f97316 0%, #ea580c 100%);
   box-shadow: 0 6px 12px rgba(249, 115, 22, 0.4);
+  transform: translateY(-2px);
 }
 
-.login-message {
+/* Message d'erreur */
+.login-error {
   margin-top: 16px;
   text-align: center;
   color: #ef4444;
   font-size: 0.875rem;
+  background: #fef2f2;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid #ef4444;
 }
 
+/* Lien inscription */
 .login-signup {
   margin-top: 24px;
   text-align: center;
   color: #6b7280;
+  font-size: 0.95rem;
 }
 
 .login-signup-link {
   color: #06b6d4;
   font-weight: 500;
   cursor: pointer;
-  text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .login-signup-link:hover {
   color: #0891b2;
+  text-decoration: underline;
 }
 
 /* Responsive */
@@ -135,18 +155,28 @@
   .login-page {
     flex-direction: column;
   }
-  
+
   .login-left,
   .login-right {
     width: 100%;
     padding: 40px;
   }
-  
-  .login-slogan {
-    font-size: 1.5rem;
+
+  .login-left {
+    min-height: 300px;
   }
-  
+
+  .login-logo {
+    font-size: 3rem;
+    margin-bottom: 30px;
+  }
+
+  .login-slogan {
+    font-size: 2rem;
+  }
+
   .login-title {
     font-size: 2rem;
+    margin-bottom: 40px;
   }
 }

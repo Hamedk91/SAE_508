@@ -8,4 +8,6 @@ import java.util.List;
 public interface SessionFormationRepository extends JpaRepository<SessionFormation, Long> {
 
     List<SessionFormation> findAllByFormation_Id(Long formationId);
+
+    List<SessionFormation> findByFormateur_Id(Long formateurId);
 }

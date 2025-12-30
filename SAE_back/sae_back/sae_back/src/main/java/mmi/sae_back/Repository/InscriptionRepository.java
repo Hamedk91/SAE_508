@@ -15,4 +15,7 @@ public interface InscriptionRepository extends JpaRepository<Inscription, Long> 
 
     // Une inscription spécifique d'un participant pour une session
     Optional<Inscription> findByParticipant_IdAndSession_Id(Long participantId, Long sessionId);
+
+    // POUR VOIR LES ÉLÈVES D’UNE SESSION
+    List<Inscription> findBySession_Id(Long sessionId);
 }

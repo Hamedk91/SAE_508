@@ -1,0 +1,12 @@
+.sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.session-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  cursor: pointer;
+}

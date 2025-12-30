@@ -1,0 +1,11 @@
+.session-detail table {
+  width: 100%;
+  background: white;
+  border-collapse: collapse;
+}
+
+.session-detail th,
+.session-detail td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}

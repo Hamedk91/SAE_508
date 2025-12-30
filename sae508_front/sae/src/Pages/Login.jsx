@@ -1,39 +1,46 @@
 import { useState } from "react";
-import "../css/Login.css";
+import { useNavigate } from "react-router-dom";
+import "../css/login.css";
 
-function Login({ onLogin }) {
+export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const login = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
     try {
-      const response = await fetch("http://localhost:8080/api/login", {
+      const res = await fetch("http://localhost:8080/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, motDePasse }),
       });
 
-      if (!response.ok) {
-        const err = await response.json();
-        setMessage(err.error || "Email ou mot de passe incorrect");
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Erreur lors du login");
         return;
       }
 
-      const data = await response.json();
+      // Stocker token et user complet
       localStorage.setItem("token", data.token);
-      localStorage.setItem("role", data.role);
-      onLogin(data.role.toUpperCase());
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-    } catch (error) {
-      setMessage("Erreur de connexion");
-      console.error(error);
+      onLogin(data.user.role);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      setError("Erreur serveur");
     }
   };
 
   return (
     <div className="login-page">
-      {/* Section gauche - Bleu avec slogan */}
+      {/* Section gauche - Bleu avec logo et slogan */}
       <div className="login-left">
         <div className="login-logo">TxL</div>
         <h2 className="login-slogan">
@@ -41,38 +48,39 @@ function Login({ onLogin }) {
         </h2>
       </div>
 
-      {/* Section droite - Formulaire */}
+      {/* Section droite - Formulaire blanc */}
       <div className="login-right">
         <div className="login-form-container">
           <h1 className="login-title">CONNEXION</h1>
           
-          <div className="login-form">
+          <form onSubmit={handleSubmit} className="login-form">
             <input
               type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
               placeholder="Identifiant"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="login-input"
+              required
             />
-
+            
             <input
               type="password"
-              value={motDePasse}
-              onChange={e => setMotDePasse(e.target.value)}
               placeholder="Mot de passe"
-              onKeyPress={e => e.key === 'Enter' && login()}
+              value={motDePasse}
+              onChange={(e) => setMotDePasse(e.target.value)}
               className="login-input"
+              required
             />
-
-            <button onClick={login} className="login-button">
+            
+            <button type="submit" className="login-button">
               Connectez-vous
             </button>
-          </div>
-
-          {message && <p className="login-message">{message}</p>}
+            
+            {error && <p className="login-error">{error}</p>}
+          </form>
 
           <p className="login-signup">
-            Pas de compte?{" "}
+            Pas de compte ?{" "}
             <span className="login-signup-link">Inscrivez-vous</span>
           </p>
         </div>
@@ -80,5 +88,3 @@ function Login({ onLogin }) {
     </div>
   );
 }
-
-export default Login;

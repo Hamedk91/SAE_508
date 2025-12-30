@@ -1,0 +1,38 @@
+.formateur-dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+.formateur-sidebar {
+  width: 240px;
+  background: white;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formateur-sidebar button {
+  padding: 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.formateur-sidebar button.active {
+  background: #e6f0ff;
+  border-radius: 8px;
+}
+
+.logout {
+  margin-top: auto;
+  background: #ef4444;
+  color: white;
+}
+
+.formateur-content {
+  flex: 1;
+  padding: 40px;
+  background: linear-gradient(135deg, #fce7f3, #dbeafe);
+}

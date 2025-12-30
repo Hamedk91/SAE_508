@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000") // compatible port 3000
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthRestController {
 
     private final UtilisateurService utilisateurService;
@@ -22,24 +22,30 @@ public class AuthRestController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Utilisateur user) {
-        try {
-            System.out.println("Tentative login: " + user.getEmail());
+    public ResponseEntity<?> login(@RequestBody Utilisateur user) {
 
-            return utilisateurService.login(user.getEmail(), user.getMotDePasse())
-                    .map(u -> {
-                        String token = jwtUtil.generateToken(u.getId(), u.getRole());
-                        return ResponseEntity.ok(
-                                Map.of("token", token, "role", u.getRole())
-                        );
-                    })
-                    .orElse(ResponseEntity.status(401)
-                            .body(Map.of("error", "Email ou mot de passe incorrect"))
+        return utilisateurService.login(user.getEmail(), user.getMotDePasse())
+                .map(u -> {
+                    String token = jwtUtil.generateToken(u.getId(), u.getRole());
+
+                    // 🔐 réponse propre, sans mot de passe
+                    return ResponseEntity.ok(
+                            Map.of(
+                                    "token", token,
+                                    "role", u.getRole(),
+                                    "user", Map.of(
+                                            "id", u.getId(),
+                                            "nom", u.getNom(),
+                                            "prenom", u.getPrenom(),
+                                            "email", u.getEmail(),
+                                            "role", u.getRole()
+                                    )
+                            )
                     );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500)
-                    .body(Map.of("error", "Erreur serveur"));
-        }
+                })
+                .orElse(
+                        ResponseEntity.status(401)
+                                .body(Map.of("error", "Email ou mot de passe incorrect"))
+                );
     }
 }

@@ -7,6 +7,7 @@ export default function MesFormations() {
 
   useEffect(() => {
     if (!token) return;
+
     fetch("http://localhost:8080/api/participant/formations", {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -15,7 +16,8 @@ export default function MesFormations() {
       .catch(console.error);
   }, [token]);
 
-  const formatDate = (date) => (date ? new Date(date).toLocaleDateString("fr-FR") : "Non définie");
+  const formatDate = (date) =>
+    date ? new Date(date).toLocaleDateString("fr-FR") : "Non définie";
 
   const handleDelete = (sessionId) => {
     if (!window.confirm("Voulez-vous vraiment vous désinscrire de cette session ?")) return;
@@ -26,14 +28,13 @@ export default function MesFormations() {
     })
       .then((res) => {
         if (!res.ok) throw new Error("Erreur lors de la désinscription");
-        // Mise à jour du state après suppression
         setFormations((prevFormations) =>
           prevFormations
             .map((f) => ({
               ...f,
               sessions: f.sessions.filter((s) => s.id !== sessionId),
             }))
-            .filter((f) => f.sessions.length > 0) // Supprime les formations vides
+            .filter((f) => f.sessions.length > 0)
         );
         alert("Désinscription réussie !");
       })
@@ -54,8 +55,9 @@ export default function MesFormations() {
               <span className="formation-category">Formation</span>
               <h4>{f.titre}</h4>
               <p>{f.description}</p>
+
               {f.sessions && f.sessions.length > 0 && (
-                <div>
+                <div className="sessions-list">
                   {f.sessions.map((s) => (
                     <div key={s.id} className="session-item">
                       <p>
@@ -64,7 +66,14 @@ export default function MesFormations() {
                       <p>
                         <strong>Fin :</strong> {formatDate(s.dateFin)}
                       </p>
-                      <button className="delete-button" onClick={() => handleDelete(s.id)}>
+                      <p>
+                        <strong>Note attribuée :</strong>{" "}
+                        {s.note !== null ? s.note : "Non noté"}
+                      </p>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDelete(s.id)}
+                      >
                         Supprimer l'inscription
                       </button>
                     </div>

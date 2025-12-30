@@ -26,7 +26,7 @@ export default function AdminProfesseurs() {
 
   const fetchFormateurs = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/admin/formateurs", {
+      const res = await fetch("http://localhost:8080/api/formateurs", {
         headers: authHeader,
       });
       if (!res.ok) throw new Error("Erreur");
@@ -59,8 +59,8 @@ export default function AdminProfesseurs() {
     try {
       const method = currentFormateur ? "PUT" : "POST";
       const url = currentFormateur
-        ? `http://localhost:8080/api/admin/formateurs/${currentFormateur.id}`
-        : "http://localhost:8080/api/admin/formateurs";
+        ? `http://localhost:8080/api/formateurs/${currentFormateur.id}`
+        : "http://localhost:8080/api/formateurs";
 
       const res = await fetch(url, {
         method,
@@ -80,7 +80,7 @@ export default function AdminProfesseurs() {
   const handleDelete = async (id) => {
     if (!window.confirm("Supprimer ce formateur ?")) return;
     try {
-      const res = await fetch(`http://localhost:8080/api/admin/formateurs/${id}`, {
+      const res = await fetch(`http://localhost:8080/api/formateurs/${id}`, {
         method: "DELETE",
         headers: authHeader,
       });

@@ -23,4 +23,6 @@ public class Inscription {
     @JoinColumn(name = "session_id")
     @JsonIgnoreProperties("inscriptions")
     private SessionFormation session;
+
+    private Double note;
 }
