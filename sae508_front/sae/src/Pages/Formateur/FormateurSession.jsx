@@ -4,40 +4,29 @@ import "../../css/FormateurSession.css";
 
 export default function FormateurSessions() {
   const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("user")) || null;
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
   const formateurId = user?.id;
 
   const [sessions, setSessions] = useState([]);
   const [selectedSession, setSelectedSession] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!formateurId) {
-      setError("Formateur non identifié");
-      setLoading(false);
-      return;
-    }
+    if (!formateurId) return;
 
     fetch(`http://localhost:8080/api/formateur/${formateurId}/sessions`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setSessions(data);
-        } else {
-          setSessions([]);
-          console.warn("Réponse inattendue API sessions", data);
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        setError("Impossible de récupérer les sessions");
-      })
+      .then(data => setSessions(Array.isArray(data) ? data : []))
+      .catch(console.error)
       .finally(() => setLoading(false));
   }, [formateurId, token]);
 
+  if (!formateurId) return <p>Formateur non identifié</p>;
+  if (loading) return <p>Chargement des sessions...</p>;
+
+  // Affichage détail session
   if (selectedSession) {
     return (
       <FormateurSessionDetail
@@ -47,13 +36,11 @@ export default function FormateurSessions() {
     );
   }
 
-  if (loading) return <p>Chargement des sessions...</p>;
-  if (error) return <p className="error">{error}</p>;
-  if (sessions.length === 0) return <p>Aucune session assignée.</p>;
-
+  // Liste des sessions
   return (
     <div className="formateur-sessions">
       <h2>Mes sessions</h2>
+      {sessions.length === 0 && <p>Aucune session trouvée</p>}
       <div className="sessions-grid">
         {sessions.map(s => (
           <div
@@ -64,14 +51,8 @@ export default function FormateurSessions() {
             <h3>{s.formation?.titre || "Formation inconnue"}</h3>
             <p>📍 {s.lieu || "Lieu non précisé"}</p>
             <p>
-              📅{" "}
-              {s.dateDebut
-                ? new Date(s.dateDebut).toLocaleDateString()
-                : "?"}{" "}
-              →{" "}
-              {s.dateFin
-                ? new Date(s.dateFin).toLocaleDateString()
-                : "?"}
+              📅 {s.dateDebut ? new Date(s.dateDebut).toLocaleDateString() : "?"} →{" "}
+              {s.dateFin ? new Date(s.dateFin).toLocaleDateString() : "?"}
             </p>
           </div>
         ))}

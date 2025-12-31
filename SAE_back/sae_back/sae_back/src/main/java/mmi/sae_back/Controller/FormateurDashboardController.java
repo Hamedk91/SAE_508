@@ -1,10 +1,10 @@
 package mmi.sae_back.Controller;
 
-
-
 import mmi.sae_back.Entity.Inscription;
+import mmi.sae_back.Entity.Note;
 import mmi.sae_back.Entity.SessionFormation;
 import mmi.sae_back.Repository.InscriptionRepository;
+import mmi.sae_back.Repository.NoteRepository;
 import mmi.sae_back.Repository.SessionFormationRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,16 +17,19 @@ public class FormateurDashboardController {
 
     private final SessionFormationRepository sessionRepo;
     private final InscriptionRepository inscriptionRepo;
+    private final NoteRepository noteRepo;
 
     public FormateurDashboardController(
             SessionFormationRepository sessionRepo,
-            InscriptionRepository inscriptionRepo
+            InscriptionRepository inscriptionRepo,
+            NoteRepository noteRepo
     ) {
         this.sessionRepo = sessionRepo;
         this.inscriptionRepo = inscriptionRepo;
+        this.noteRepo = noteRepo;
     }
 
-    // ✅ 1. Sessions d’un formateur (via son ID)
+    // 1️⃣ Sessions du formateur
     @GetMapping("/{formateurId}/sessions")
     public List<SessionFormation> sessionsDuFormateur(
             @PathVariable Long formateurId
@@ -34,7 +37,7 @@ public class FormateurDashboardController {
         return sessionRepo.findByFormateur_Id(formateurId);
     }
 
-    // ✅ 2. Élèves d’une session
+    // 2️⃣ Élèves d’une session
     @GetMapping("/sessions/{sessionId}/eleves")
     public List<Inscription> elevesSession(
             @PathVariable Long sessionId
@@ -42,17 +45,24 @@ public class FormateurDashboardController {
         return inscriptionRepo.findBySession_Id(sessionId);
     }
 
-    // ✅ 3. Ajouter / modifier une note pour un élève
-    @PutMapping("/inscriptions/{inscriptionId}/note")
-    public Inscription noterEleve(
+    // 3️⃣ Ajouter une note (popup formateur)
+    @PostMapping("/inscriptions/{inscriptionId}/notes")
+    public Note ajouterNote(
             @PathVariable Long inscriptionId,
-            @RequestBody Double note
+            @RequestBody Note note
     ) {
-        Inscription inscription = inscriptionRepo
-                .findById(inscriptionId)
+        Inscription inscription = inscriptionRepo.findById(inscriptionId)
                 .orElseThrow(() -> new RuntimeException("Inscription introuvable"));
 
-        inscription.setNote(note);
-        return inscriptionRepo.save(inscription);
+        note.setId(null);
+        note.setInscription(inscription);
+
+        return noteRepo.save(note);
+    }
+
+    // 4️⃣ Supprimer une note
+    @DeleteMapping("/notes/{noteId}")
+    public void supprimerNote(@PathVariable Long noteId) {
+        noteRepo.deleteById(noteId);
     }
 }

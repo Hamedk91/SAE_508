@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../css/MesFormations.css";
 
 export default function MesFormations() {
   const token = localStorage.getItem("token");
   const [formations, setFormations] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) return;
@@ -50,7 +52,6 @@ export default function MesFormations() {
       <div className="sections-grid">
         {formations.map((f) => (
           <div key={f.id} className="formation-card">
-            <div className="formation-card-image"></div>
             <div className="formation-card-content">
               <span className="formation-category">Formation</span>
               <h4>{f.titre}</h4>
@@ -67,15 +68,22 @@ export default function MesFormations() {
                         <strong>Fin :</strong> {formatDate(s.dateFin)}
                       </p>
                       <p>
-                        <strong>Note attribuée :</strong>{" "}
-                        {s.note !== null ? s.note : "Non noté"}
+                        <strong>Note attribuée :</strong> {s.note !== null ? s.note : "Non noté"}
                       </p>
-                      <button
-                        className="delete-button"
-                        onClick={() => handleDelete(s.id)}
-                      >
-                        Supprimer l'inscription
-                      </button>
+                      <div className="session-actions">
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDelete(s.id)}
+                        >
+                          Supprimer l'inscription
+                        </button>
+                        <button
+                          className="notes-button"
+                          onClick={() => navigate(`/session-notes/${s.id}`)}
+                        >
+                          Voir les notes
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

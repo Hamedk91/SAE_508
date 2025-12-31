@@ -3,6 +3,7 @@ package mmi.sae_back.Controller;
 import mmi.sae_back.DTO.FormationDTO;
 import mmi.sae_back.DTO.SessionParticipantDTO;
 import mmi.sae_back.Entity.Inscription;
+import mmi.sae_back.Entity.Note;
 import mmi.sae_back.Entity.SessionFormation;
 import mmi.sae_back.Entity.Utilisateur;
 import mmi.sae_back.Repository.InscriptionRepository;
@@ -24,15 +25,19 @@ public class ParticipantController {
     private final UtilisateurRepository utilisateurRepository;
     private final JwtUtil jwtUtil;
 
-    public ParticipantController(InscriptionRepository inscriptionRepository,
-                                 SessionFormationRepository sessionRepository,
-                                 UtilisateurRepository utilisateurRepository,
-                                 JwtUtil jwtUtil) {
+    public ParticipantController(
+            InscriptionRepository inscriptionRepository,
+            SessionFormationRepository sessionRepository,
+            UtilisateurRepository utilisateurRepository,
+            JwtUtil jwtUtil
+    ) {
         this.inscriptionRepository = inscriptionRepository;
         this.sessionRepository = sessionRepository;
         this.utilisateurRepository = utilisateurRepository;
         this.jwtUtil = jwtUtil;
     }
+
+    /* ===================== UTILS ===================== */
 
     private Long getUserIdFromToken(String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -42,7 +47,8 @@ public class ParticipantController {
         return jwtUtil.getUserId(token);
     }
 
-    /* ===== PROFIL ===== */
+    /* ===================== PROFIL ===================== */
+
     @GetMapping("/profil")
     public Utilisateur getProfil(@RequestHeader("Authorization") String auth) {
         Long userId = getUserIdFromToken(auth);
@@ -50,17 +56,25 @@ public class ParticipantController {
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
     }
 
-    /* ===== MES FORMATIONS + NOTE ===== */
+    /* ===================== MES FORMATIONS ===================== */
+
     @GetMapping("/formations")
-    public List<FormationDTO> getMesFormations(@RequestHeader("Authorization") String auth) {
+    public List<FormationDTO> getMesFormations(
+            @RequestHeader("Authorization") String auth
+    ) {
         Long userId = getUserIdFromToken(auth);
 
-        List<Inscription> inscriptions = inscriptionRepository.findByParticipant_Id(userId);
-        if (inscriptions.isEmpty()) return new ArrayList<>();
+        List<Inscription> inscriptions =
+                inscriptionRepository.findByParticipant_Id(userId);
+
+        if (inscriptions.isEmpty()) {
+            return new ArrayList<>();
+        }
 
         Map<Long, FormationDTO> formationMap = new HashMap<>();
 
         for (Inscription inscription : inscriptions) {
+
             SessionFormation session = inscription.getSession();
             if (session == null || session.getFormation() == null) continue;
 
@@ -77,32 +91,49 @@ public class ParticipantController {
             sessionDTO.setId(session.getId());
             sessionDTO.setDateDebut(session.getDateDebut());
             sessionDTO.setDateFin(session.getDateFin());
-            sessionDTO.setNote(inscription.getNote());
 
-            formationMap.get(formationId).getSessions().add(sessionDTO);
+            formationMap.get(formationId)
+                    .getSessions()
+                    .add(sessionDTO);
         }
 
         return new ArrayList<>(formationMap.values());
     }
 
-    /* ===== SUPPRIMER INSCRIPTION ===== */
-    @DeleteMapping("/inscriptions/{sessionId}")
-    public ResponseEntity<String> desinscrire(@RequestHeader("Authorization") String auth,
-                                              @PathVariable Long sessionId) {
+    /* ===================== NOTES D’UNE SESSION ===================== */
+
+    @GetMapping("/sessions/{sessionId}/notes")
+    public List<Note> mesNotes(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable Long sessionId
+    ) {
         Long userId = getUserIdFromToken(auth);
 
-        Optional<Inscription> inscriptionOpt = inscriptionRepository
-                .findByParticipant_IdAndSession_Id(userId, sessionId);
+        Inscription inscription = inscriptionRepository
+                .findByParticipant_IdAndSession_Id(userId, sessionId)
+                .orElseThrow(() -> new RuntimeException("Inscription introuvable"));
 
-        if (inscriptionOpt.isEmpty()) return ResponseEntity.status(404).body("Inscription non trouvée");
+        return inscription.getNotes();
+    }
 
-        Inscription inscription = inscriptionOpt.get();
+    /* ===================== DÉSINSCRIPTION ===================== */
+
+    @DeleteMapping("/inscriptions/{sessionId}")
+    public ResponseEntity<String> desinscrire(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable Long sessionId
+    ) {
+        Long userId = getUserIdFromToken(auth);
+
+        Inscription inscription = inscriptionRepository
+                .findByParticipant_IdAndSession_Id(userId, sessionId)
+                .orElseThrow(() -> new RuntimeException("Inscription non trouvée"));
+
         inscriptionRepository.delete(inscription);
 
         SessionFormation session = inscription.getSession();
         if (session != null) {
-            Integer places = session.getPlacesRestantes();
-            session.setPlacesRestantes(places != null ? places + 1 : 1);
+            session.setPlacesRestantes(session.getPlacesRestantes() + 1);
             sessionRepository.save(session);
         }
 

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -24,5 +26,6 @@ public class Inscription {
     @JsonIgnoreProperties("inscriptions")
     private SessionFormation session;
 
-    private Double note;
+    @OneToMany(mappedBy = "inscription", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Note> notes;
 }
