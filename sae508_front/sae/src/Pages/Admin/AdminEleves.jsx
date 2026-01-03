@@ -96,51 +96,61 @@ export default function AdminEleves() {
   if (loading) return <p style={{ textAlign: "center", padding: "60px" }}>Chargement...</p>;
 
   return (
-    <div className="admin-page">
-      <div className="admin-header">
-        <h2>👥 Utilisateurs</h2>
-        <button className="admin-add-button" onClick={() => openModal()}>
-          ➕ Ajouter un utilisateur
-        </button>
+    <div className="admin-eleves-container">
+      
+      {/* --- FOND FLOU (Arrière-plan) --- */}
+      <div className="bg-blur-wrapper">
+        <div className="blur-blob blob-cyan"></div>
+        <div className="blur-blob blob-purple"></div>
       </div>
+
+      {/* --- CONTENU --- */}
+      <h2 className="admin-eleves-title">Utilisateurs</h2>
 
       {error && <div className="admin-error">{error}</div>}
 
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-            <th>Rôle</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {utilisateurs.length === 0 ? (
+      <div className="admin-eleves-table-card">
+        <table className="admin-table">
+          <thead>
             <tr>
-              <td colSpan="5" className="admin-table-empty">
-                <div className="admin-table-empty-icon">👥</div>
-                <p>Aucun utilisateur enregistré</p>
-              </td>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Email</th>
+              <th>Rôle</th>
+              <th>Actions</th>
             </tr>
-          ) : (
-            utilisateurs.map((u) => (
-              <tr key={u.id}>
-                <td>{u.nom}</td>
-                <td>{u.prenom}</td>
-                <td>{u.email}</td>
-                <td>{u.role}</td>
-                <td>
-                  <button onClick={() => openModal(u)}>Modifier</button>
-                  <button onClick={() => handleDelete(u.id)}>Supprimer</button>
+          </thead>
+          <tbody>
+            {utilisateurs.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="admin-table-empty">
+                  <div className="admin-table-empty-icon">👥</div>
+                  <p>Aucun utilisateur enregistré</p>
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              utilisateurs.map((u) => (
+                <tr key={u.id}>
+                  <td>{u.nom}</td>
+                  <td>{u.prenom}</td>
+                  <td>{u.email}</td>
+                  <td>{u.role}</td>
+                  <td>
+                    <button className="admin-btn-modifier" onClick={() => openModal(u)}>Modifier</button>
+                    <button className="admin-btn-supprimer" onClick={() => handleDelete(u.id)}>Supprimer</button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
+      <button className="admin-add-button" onClick={() => openModal()}>
+        Ajouter un utilisateur
+      </button>
+
+      {/* --- MODALE --- */}
       {modalVisible && (
         <div className="admin-modal-backdrop" onClick={closeModal}>
           <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
