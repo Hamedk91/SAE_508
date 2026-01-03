@@ -1,45 +1,96 @@
-.admin-eleves-page {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #d9d9d9;
-  padding: 32px;
-}
-
-/* HEADER */
-.admin-eleves-header {
+/* --- STRUCTURE PRINCIPALE --- */
+.admin-eleves-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: center; /* Centre horizontalement tout le contenu */
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100%; /* S'assure de prendre toute la largeur disponible */
+  padding: 32px;
+  padding-top: 40px; /* Un peu moins de top padding pour l'équilibre */
+  /* Fond de base fixe */
+  background-color: transparent; /* Transparent car géré par le dashboard ou bg-blur */
+  position: relative;
+}
+
+/* --- EFFET GRADIENT BLUR --- */
+.bg-blur-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0; 
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blur-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.5;
+}
+
+.blob-cyan {
+  width: 700px;
+  height: 700px;
+  background: #a5f3fc;
+  top: 10%;
+  left: -200px;
+}
+
+.blob-purple {
+  width: 800px;
+  height: 800px;
+  background: #fbcfe8;
+  top: -100px;
+  right: -200px;
+}
+
+/* --- TITRE --- */
+.admin-eleves-title {
+  position: relative;
+  z-index: 1;
+  font-size: 48px; /* Ajusté pour ne pas être trop massif */
+  color: #000000;
+  margin-bottom: 40px;
+  margin-top: 0;
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+  font-weight: 800;
+}
+
+/* --- CARTE DU TABLEAU --- */
+.admin-eleves-table-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.75); 
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 1200px; /* Garde le tableau contenu au centre */
   margin-bottom: 32px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.admin-eleves-header h2 {
-  font-size: 28px;
-  color: #004aad;
+.admin-eleves-table-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
 }
 
-.admin-add-eleve-button {
-  background: #f7931e;
-  color: white;
-  border: none;
-  padding: 14px 26px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* TABLE */
-.admin-table-container {
-  overflow-x: auto;
-}
-
+/* --- TABLE --- */
 .admin-table {
   width: 100%;
   border-collapse: collapse;
 }
 
 .admin-table th {
-  background: #004aad;
+  background: #004AAD;
   color: white;
   padding: 14px;
   text-align: left;
@@ -48,48 +99,151 @@
 
 .admin-table td {
   padding: 14px;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 14px;
+  color: #333;
+}
+
+/* --- BOUTONS ACTIONS --- */
+.admin-table td:last-child {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.admin-btn-modifier {
+  background: #000000;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-supprimer {
+  background: #E21D26;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-modifier:hover, .admin-btn-supprimer:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+/* --- BOUTON AJOUTER --- */
+.admin-add-button {
+  position: relative;
+  z-index: 1;
+  background: #f7931e;
+  color: white;
+  border: none;
+  padding: 14px 40px; /* Plus large pour être plus joli centré */
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(247, 147, 30, 0.3);
+  font-size: 16px;
+}
+
+.admin-add-button:hover {
+  background: #e6851a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(247, 147, 30, 0.4);
+}
+
+/* --- MODALE --- */
+.admin-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.admin-modal {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  width: 420px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.admin-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-modal-form input,
+.admin-modal-form select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   font-size: 14px;
 }
 
-/* STATUS */
-.admin-status-badge {
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-weight: 600;
-  font-size: 12px;
-}
-
-.admin-status-actif {
-  background: #e6f9f0;
-  color: #1e9b5c;
-}
-
-.admin-status-inactif {
-  background: #fdecea;
-  color: #fe7062;
-}
-
-/* ACTIONS */
-.admin-table-actions {
+.admin-modal-actions {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.admin-action-button {
-  border: none;
-  padding: 8px 14px;
+.admin-modal-actions button {
+  flex: 1;
+  padding: 10px;
   border-radius: 8px;
-  font-size: 13px;
+  border: none;
   cursor: pointer;
+  font-weight: 600;
 }
 
-.admin-action-modifier {
-  background: #00aeef;
+.admin-modal-actions button[type="submit"] {
+  background: #000;
   color: white;
 }
 
-.admin-action-supprimer {
-  background: #fe7062;
-  color: white;
+.admin-modal-actions button[type="button"] {
+  background: #f0f0f0;
+  color: #333;
+}
+
+/* --- ERREUR --- */
+.admin-error {
+  position: relative;
+  z-index: 1;
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+/* --- EMPTY STATE --- */
+.admin-table-empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+.admin-table-empty-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
 }
