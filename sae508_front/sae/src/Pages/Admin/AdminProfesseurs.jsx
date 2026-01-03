@@ -94,51 +94,61 @@ export default function AdminProfesseurs() {
   if (loading) return <p style={{ textAlign: "center", padding: "60px" }}>Chargement...</p>;
 
   return (
-    <div className="admin-page">
-      <div className="admin-header">
-        <h2>👨‍🏫 Formateurs</h2>
-        <button className="admin-add-button" onClick={() => openModal()}>
-          ➕ Ajouter un formateur
-        </button>
+    <div className="admin-professeurs-container">
+      
+      {/* --- FOND FLOU (Arrière-plan) --- */}
+      <div className="bg-blur-wrapper">
+        <div className="blur-blob blob-cyan"></div>
+        <div className="blur-blob blob-purple"></div>
       </div>
+
+      {/* --- CONTENU --- */}
+      <h2 className="admin-professeurs-title">Formateurs</h2>
 
       {error && <div className="admin-error">{error}</div>}
 
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-            <th>Statut</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {formateurs.length === 0 ? (
+      <div className="admin-professeurs-table-card">
+        <table className="admin-table">
+          <thead>
             <tr>
-              <td colSpan="5" className="admin-table-empty">
-                <div className="admin-table-empty-icon">👨‍🏫</div>
-                <p>Aucun formateur enregistré</p>
-              </td>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Email</th>
+              <th>Statut</th>
+              <th>Actions</th>
             </tr>
-          ) : (
-            formateurs.map((f) => (
-              <tr key={f.id}>
-                <td>{f.nom}</td>
-                <td>{f.prenom}</td>
-                <td>{f.email}</td>
-                <td>{f.statut}</td>
-                <td>
-                  <button onClick={() => openModal(f)}>Modifier</button>
-                  <button onClick={() => handleDelete(f.id)}>Supprimer</button>
+          </thead>
+          <tbody>
+            {formateurs.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="admin-table-empty">
+                  <div className="admin-table-empty-icon">👨‍🏫</div>
+                  <p>Aucun formateur enregistré</p>
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              formateurs.map((f) => (
+                <tr key={f.id}>
+                  <td>{f.nom}</td>
+                  <td>{f.prenom}</td>
+                  <td>{f.email}</td>
+                  <td>{f.statut}</td>
+                  <td>
+                    <button className="admin-btn-modifier" onClick={() => openModal(f)}>Modifier</button>
+                    <button className="admin-btn-supprimer" onClick={() => handleDelete(f.id)}>Supprimer</button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
+      <button className="admin-add-button" onClick={() => openModal()}>
+        Ajouter un formateur
+      </button>
+
+      {/* --- MODALE --- */}
       {modalVisible && (
         <div className="admin-modal-backdrop" onClick={closeModal}>
           <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
