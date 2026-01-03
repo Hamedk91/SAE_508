@@ -1,61 +1,132 @@
-/* ================== PAGE ================== */
-.admin-formations-page {
-  background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #e5e7eb;
-  padding: 36px;
-  min-height: 100%;
+/* --- STRUCTURE PRINCIPALE --- */
+.admin-formations-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100%;
+  padding: 32px;
+  padding-top: 40px;
+  background-color: transparent;
+  position: relative;
 }
 
-/* ================== HEADER ================== */
-.admin-formations-header,
-.admin-header-actions {
+/* --- EFFET GRADIENT BLUR --- */
+.bg-blur-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200vw;
+  height: 10vh;
+  z-index: 0; 
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blur-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.5;
+}
+
+.blob-cyan {
+  width: 700px;
+  height: 700px;
+  background: #a5f3fc;
+  top: 10%;
+  left: -200px;
+}
+
+.blob-purple {
+  width: 800px;
+  height: 800px;
+  background: #fbcfe8;
+  top: -100px;
+  right: -200px;
+}
+
+/* --- TITRE --- */
+.admin-formations-title {
+  position: relative;
+  z-index: 1;
+  font-size: 48px;
+  color: #000000;
+  margin-bottom: 40px;
+  margin-top: 0;
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+  font-weight: 800;
+}
+
+/* --- HEADER AVEC ACTIONS --- */
+.admin-formations-header {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 28px;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 20px;
 }
 
-.admin-formations-header h2,
-.admin-header-actions h3 {
-  font-size: 26px;
+.admin-formations-header h3 {
+  font-size: 28px;
   font-weight: 700;
-  color: #003b8f;
+  color: #000;
+  margin: 0;
 }
 
-/* ================== BUTTONS ================== */
-.admin-add-button {
-  background: linear-gradient(135deg, #f7931e, #ffab4d);
-  color: #ffffff;
-  border: none;
-  padding: 14px 28px;
+/* --- BOUTON RETOUR --- */
+.admin-back-button {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #333;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
   border-radius: 12px;
   font-weight: 600;
+  margin-bottom: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
-}
-
-.admin-add-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(247, 147, 30, 0.35);
-}
-
-.admin-back-button {
-  background: #f3f4f6;
-  color: #374151;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-weight: 500;
-  margin-bottom: 24px;
-  cursor: pointer;
+  align-self: flex-start;
+  max-width: 1200px;
+  width: auto;
 }
 
 .admin-back-button:hover {
-  background: #e5e7eb;
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateX(-2px);
 }
 
-/* ================== LIST ================== */
+/* --- CARTE DU TABLEAU --- */
+.admin-formations-table-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.75); 
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 32px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.admin-formations-table-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* --- LISTE (pour catégories et formations) --- */
 .admin-list {
   list-style: none;
   padding: 0;
@@ -63,22 +134,23 @@
 }
 
 .admin-list-item {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   padding: 18px 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .admin-list-item:hover {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
   border-color: #004aad;
-  box-shadow: 0 6px 20px rgba(0, 74, 173, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 74, 173, 0.1);
+  transform: translateY(-2px);
 }
 
 .admin-list-item span {
@@ -87,87 +159,230 @@
   color: #111827;
 }
 
-/* ================== ACTIONS ================== */
+/* --- EMPTY STATE POUR LISTE --- */
+.admin-list-empty {
+  text-align: center;
+  padding: 60px 20px;
+  list-style: none;
+}
+
+/* --- ACTIONS --- */
 .admin-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
-.admin-edit-button {
-  background: #00aeef;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.admin-edit-button:hover {
-  background: #0097d6;
-}
-
-.admin-delete-button {
-  background: #fe7062;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.admin-delete-button:hover {
-  background: #e85a4f;
-}
-
-/* ================== TABLE ================== */
+/* --- TABLE (pour sessions) --- */
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.admin-table thead {
-  background: #004aad;
 }
 
 .admin-table th {
+  background: #004AAD;
   color: white;
   padding: 14px;
   text-align: left;
   font-size: 14px;
-  font-weight: 600;
 }
 
 .admin-table td {
   padding: 14px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   font-size: 14px;
-  color: #374151;
+  color: #333;
+}
+
+.admin-table tbody tr {
+  transition: background 0.2s ease;
 }
 
 .admin-table tbody tr:hover {
-  background: #f9fafb;
+  background: rgba(0, 74, 173, 0.05);
 }
 
-/* ================== STATUS ================== */
-.admin-status {
-  padding: 6px 14px;
+/* --- BOUTONS ACTIONS --- */
+.admin-table td:last-child {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.admin-btn-modifier {
+  background: #000000;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-supprimer {
+  background: #E21D26;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-modifier:hover, .admin-btn-supprimer:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+/* --- BOUTON AJOUTER --- */
+.admin-add-button {
+  position: relative;
+  z-index: 1;
+  background: #f7931e;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(247, 147, 30, 0.3);
+  font-size: 14px;
+}
+
+.admin-add-button:hover {
+  background: #e6851a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(247, 147, 30, 0.4);
+}
+
+/* --- MODALE --- */
+.admin-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.admin-modal {
+  background: white;
   border-radius: 20px;
-  font-size: 12px;
+  padding: 32px;
+  width: 420px;
+  max-width: 90%;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.admin-modal h3 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000;
+}
+
+.admin-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-modal-form input,
+.admin-modal-form select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border 0.2s ease;
+}
+
+.admin-modal-form input:focus,
+.admin-modal-form select:focus {
+  outline: none;
+  border-color: #004AAD;
+}
+
+.admin-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.admin-modal-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
   font-weight: 600;
-  display: inline-block;
+  font-size: 14px;
+  transition: all 0.2s ease;
 }
 
-.admin-status-open {
-  background: #e6f9f0;
-  color: #1e9b5c;
+.admin-modal-actions button[type="submit"] {
+  background: #000;
+  color: white;
 }
 
-.admin-status-closed {
-  background: #fdecea;
-  color: #fe7062;
+.admin-modal-actions button[type="submit"]:hover {
+  background: #333;
+}
+
+.admin-modal-actions button[type="button"] {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.admin-modal-actions button[type="button"]:hover {
+  background: #e0e0e0;
+}
+
+/* --- EMPTY STATE --- */
+.admin-table-empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.admin-table-empty-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.admin-table-empty p {
+  color: #666;
+  font-size: 14px;
+}
+
+/* --- LOADING --- */
+.loading {
+  text-align: center;
+  padding: 60px;
+  font-size: 16px;
+  color: #666;
+}
+
+.admin-actions-footer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: center; /* Aligné à droite sous la carte */
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+/* On s'assure que le header ne force plus le bouton à sa droite */
+.admin-formations-header {
+  justify-content: flex-start;
 }
