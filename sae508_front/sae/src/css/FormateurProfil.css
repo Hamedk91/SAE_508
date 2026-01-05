@@ -1,6 +1,158 @@
-.profil-card {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  max-width: 400px;
+/* --- STRUCTURE PRINCIPALE --- */
+.formateur-profil-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;          /* Remonte l'ensemble (était 32px) */
+  padding-top: 20px;      /* Remonte l'ensemble (était 40px) */
+  background-color: transparent;
+  position: relative;
+}
+
+/* --- EFFET GRADIENT BLUR --- */
+.bg-blur-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blur-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+}
+
+.blob-blue {
+  width: 500px;
+  height: 500px;
+  background: #00AEEF;
+  top: 15%;
+  left: -100px;
+}
+
+.blob-pink {
+  width: 600px;
+  height: 600px;
+  background: #FDBBFB;
+  bottom: 10%;
+  right: -150px;
+}
+
+/* --- TITRE --- */
+.formateur-profil-title {
+  position: relative;
+  z-index: 1;
+  font-size: 48px;
+  color: #000000;
+  margin-bottom: 20px;    /* Remonte la carte (était 40px) */
+  margin-top: 0;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  font-weight: 800;
+}
+
+/* --- CARTE PROFIL --- */
+.formateur-profil-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  height: auto;           /* Supprimé max-height pour que tout rentre */
+}
+
+.formateur-profil-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* --- HEADER PROFIL --- */
+.profil-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 14px;
+  background: transparent;
+}
+
+.profil-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  border: 3px solid #000;
+}
+
+.profil-avatar svg {
+  stroke: #000;
+  fill: none;
+}
+
+.profil-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+  text-align: center;
+}
+
+/* --- INFOS PROFIL (MODIFIÉ POUR LES BLOCS) --- */
+.profil-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profil-info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;              /* Ajout de padding interne */
+  background: rgba(0, 0, 0, 0.03); /* Fond grisé comme sur l'image */
+  border-radius: 16px;             /* Arrondis des blocs */
+  border: none;                    /* Suppression de la bordure basse */
+}
+
+.profil-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profil-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+.profil-badge {
+  background: #004AAD;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
 }

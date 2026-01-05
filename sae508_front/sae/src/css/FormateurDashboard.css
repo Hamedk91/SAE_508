@@ -1,38 +1,133 @@
 .formateur-dashboard {
   display: flex;
-  min-height: 100vh;
-}
-
-.formateur-sidebar {
-  width: 240px;
-  background: white;
-  padding: 30px;
-  display: flex;
   flex-direction: column;
-  gap: 15px;
+  min-height: 100vh;
+  background: #F8F9FB;  /* ← Fond gris clair de base */
 }
 
-.formateur-sidebar button {
-  padding: 12px;
+/* === NAVBAR === */
+.formateur-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 40px;
+  background: rgba(255, 255, 255, 0.8);  /* ← Semi-transparent au lieu de transparent */
+  backdrop-filter: blur(8px);  /* ← Ajoute un flou */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.formateur-navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.formateur-navbar-logo img {
+  height: 80px;
+  width: auto;
+}
+
+.formateur-navbar-menu {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 32px;
+}
+
+.formateur-navbar-link {
+  background: none;
+  border: none;
+  font-size: 19px;
+  font-weight: 500;
+  color: #000;
+  cursor: pointer;
+  padding: 0;
+}
+
+.formateur-navbar-link.active {
+  background: none;
+}
+
+.formateur-navbar-link:hover {
+  background: none;
+}
+
+/* === PROFILE ICON === */
+.formateur-navbar-profile {
+  position: relative;
+}
+
+.formateur-profile-icon {
+  background: white;
+  border: 2px solid #000;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.formateur-profile-icon:hover {
+  background: #f3f4f6;
+}
+
+.formateur-profile-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* === DROPDOWN MENU === */
+.formateur-dropdown-menu {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  min-width: 180px;
+  z-index: 1000;
+}
+
+.formateur-dropdown-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
   border: none;
   background: none;
   cursor: pointer;
-  text-align: left;
-}
-
-.formateur-sidebar button.active {
-  background: #e6f0ff;
   border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease;
 }
 
-.logout {
-  margin-top: auto;
-  background: #ef4444;
-  color: white;
+.formateur-dropdown-menu button:hover {
+  background: #f3f4f6;
 }
 
+.formateur-dropdown-menu .logout-btn {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.formateur-dropdown-menu .logout-btn:hover {
+  background: #fee2e2;
+}
+
+/* === CONTENT === */
 .formateur-content {
   flex: 1;
   padding: 40px;
-  background: linear-gradient(135deg, #fce7f3, #dbeafe);
+  background: transparent;
+  position: relative;
+  overflow: visible;  /* ← Change de hidden à visible */
+  z-index: 1;  /* ← Ajoute ça */
 }

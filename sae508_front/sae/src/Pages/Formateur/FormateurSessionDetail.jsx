@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import "../../css/FormationSessionDetail.css";
+import "../../css/FormationSessionDetail.css"; // Assurez-vous que le nom du fichier CSS correspond
 
 export default function FormateurSessionDetail({ session, onBack }) {
   const token = localStorage.getItem("token");
   const [inscriptions, setInscriptions] = useState([]);
 
-  // popup
+  // popup states
   const [showPopup, setShowPopup] = useState(false);
   const [selectedInscription, setSelectedInscription] = useState(null);
   const [editingNote, setEditingNote] = useState(null);
@@ -22,12 +22,12 @@ export default function FormateurSessionDetail({ session, onBack }) {
     fetch(`http://localhost:8080/api/formateur/sessions/${session.id}/eleves`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (!Array.isArray(data)) data = [];
         // Charger les notes pour chaque inscription
         Promise.all(
-          data.map(async i => {
+          data.map(async (i) => {
             const res = await fetch(
               `http://localhost:8080/api/inscriptions/${i.id}/notes`,
               { headers: { Authorization: `Bearer ${token}` } }
@@ -72,15 +72,15 @@ export default function FormateurSessionDetail({ session, onBack }) {
         coefficient: Number(coef),
       }),
     })
-      .then(res => res.json())
-      .then(note => {
-        setInscriptions(prev =>
-          prev.map(i =>
+      .then((res) => res.json())
+      .then((note) => {
+        setInscriptions((prev) =>
+          prev.map((i) =>
             i.id === selectedInscription.id
               ? {
                   ...i,
                   notes: editingNote
-                    ? i.notes.map(n => (n.id === note.id ? note : n))
+                    ? i.notes.map((n) => (n.id === note.id ? note : n))
                     : [...(i.notes || []), note],
                 }
               : i
@@ -101,10 +101,10 @@ export default function FormateurSessionDetail({ session, onBack }) {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(() => {
-        setInscriptions(prev =>
-          prev.map(i =>
+        setInscriptions((prev) =>
+          prev.map((i) =>
             i.id === inscription.id
-              ? { ...i, notes: i.notes.filter(n => n.id !== noteId) }
+              ? { ...i, notes: i.notes.filter((n) => n.id !== noteId) }
               : i
           )
         );
@@ -115,85 +115,152 @@ export default function FormateurSessionDetail({ session, onBack }) {
   if (!session) return <p>Session non sélectionnée.</p>;
 
   return (
-    <div className="session-detail">
-      <button onClick={onBack}>⬅ Retour</button>
+    <div className="formateur-session-detail-container">
+      {/* --- FOND FLOU (Arrière-plan style Admin) --- */}
+      <div className="bg-blur-wrapper">
+        <div className="blur-blob blob-cyan"></div>
+        <div className="blur-blob blob-purple"></div>
+      </div>
 
-      <h2>{session.formation?.titre || "Titre inconnu"}</h2>
+      {/* --- BOUTON RETOUR --- */}
+      <button className="formateur-back-button" onClick={onBack}>
+        ← Retour
+      </button>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Notes</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {inscriptions.length === 0 && (
+      {/* --- TITRE --- */}
+      <h2 className="formateur-session-detail-title">
+        {session.formation?.titre || "Titre inconnu"}
+      </h2>
+
+      {/* --- CARTE DU TABLEAU --- */}
+      <div className="formateur-session-detail-card">
+        <table className="formateur-detail-table">
+          <thead>
             <tr>
-              <td colSpan="4">Aucun élève inscrit.</td>
+              <th style={{ width: "20%" }}>Nom</th>
+              <th style={{ width: "20%" }}>Prénom</th>
+              <th style={{ width: "45%" }}>Notes & Coefficients</th>
+              <th style={{ width: "15%" }}>Action</th>
             </tr>
-          )}
-          {inscriptions.map(i => (
-            <tr key={i.id}>
-              <td>{i.participant?.nom || "-"}</td>
-              <td>{i.participant?.prenom || "-"}</td>
-              <td>
-                {(i.notes || []).map(n => (
-                  <div key={n.id} className="note-item">
-                    {n.nom} : {n.valeur} (coef {n.coefficient})
-                    <button onClick={() => openPopup(i, n)}>✏️</button>
-                    <button onClick={() => deleteNote(i, n.id)}>🗑️</button>
-                  </div>
-                ))}
-              </td>
-              <td>
-                <button onClick={() => openPopup(i)}>➕ Ajouter</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {inscriptions.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="formateur-table-empty">
+                  <span className="formateur-table-empty-icon"></span>
+                  Aucun élève inscrit à cette session
+                </td>
+              </tr>
+            ) : (
+              inscriptions.map((i) => (
+                <tr key={i.id}>
+                  <td><strong>{i.participant?.nom || "-"}</strong></td>
+                  <td>{i.participant?.prenom || "-"}</td>
+                  <td>
+                    {/* Liste des notes stylisée */}
+                    {(i.notes || []).length === 0 ? (
+                      <span style={{ color: "#999", fontStyle: "italic" }}>
+                        Aucune note
+                      </span>
+                    ) : (
+                      (i.notes || []).map((n) => (
+                        <div key={n.id} className="note-item">
+                          <span className="note-info">
+                            {n.nom} : <strong>{n.valeur}/20</strong>{" "}
+                            <small>(coef. {n.coefficient})</small>
+                          </span>
+                          <div className="note-actions">
+                            <button 
+                              className="btn-icon-edit"
+                              onClick={() => openPopup(i, n)} 
+                              title="Modifier"
+                            >
+                              modifier
+                            </button>
+                            <button 
+                              className="btn-icon-delete"
+                              onClick={() => deleteNote(i, n.id)} 
+                              title="Supprimer"
+                            >
+                              
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </td>
+                  <td>
+                    <button
+                      className="formateur-btn-add"
+                      onClick={() => openPopup(i)}
+                    >
+                      Note
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
+      {/* --- MODALE --- */}
       {showPopup && selectedInscription && (
-        <div className="modal-backdrop">
-          <div className="modal">
+        <div
+          className="formateur-modal-backdrop"
+          onClick={() => {
+            setShowPopup(false);
+            setEditingNote(null);
+          }}
+        >
+          <div className="formateur-modal" onClick={(e) => e.stopPropagation()}>
             <h3>
-              {editingNote ? "Modifier" : "Ajouter"} une note pour{" "}
-              {selectedInscription.participant?.nom || "-"}
+              {editingNote ? "Modifier la note" : "Nouvelle note"} <br />
+              <span style={{ fontSize: "14px", fontWeight: "400", color: "#666" }}>
+                pour {selectedInscription.participant?.nom}{" "}
+                {selectedInscription.participant?.prenom}
+              </span>
             </h3>
 
-            <input
-              placeholder="Nom"
-              value={nom}
-              onChange={e => setNom(e.target.value)}
-            />
+            <div className="formateur-modal-form">
+              <input
+                placeholder="Intitulé (ex: Partiel 1)"
+                value={nom}
+                onChange={(e) => setNom(e.target.value)}
+              />
 
-            <input
-              type="number"
-              placeholder="Valeur"
-              value={valeur}
-              onChange={e => setValeur(e.target.value)}
-            />
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <input
+                  type="number"
+                  placeholder="Note /20"
+                  value={valeur}
+                  onChange={(e) => setValeur(e.target.value)}
+                  style={{ flex: 1 }}
+                />
 
-            <input
-              type="number"
-              placeholder="Coefficient"
-              value={coef}
-              onChange={e => setCoef(e.target.value)}
-            />
+                <input
+                  type="number"
+                  placeholder="Coef."
+                  value={coef}
+                  onChange={(e) => setCoef(e.target.value)}
+                  style={{ width: '80px' }}
+                />
+              </div>
 
-            <div className="modal-actions">
-              <button onClick={submitNote}>✅ Valider</button>
-              <button
-                onClick={() => {
-                  setShowPopup(false);
-                  setEditingNote(null);
-                }}
-              >
-                ❌ Annuler
-              </button>
+              <div className="formateur-modal-actions">
+                <button className="btn-valider" onClick={submitNote}>
+                  {editingNote ? "Enregistrer" : "Ajouter"}
+                </button>
+                <button
+                  className="btn-annuler"
+                  onClick={() => {
+                    setShowPopup(false);
+                    setEditingNote(null);
+                  }}
+                >
+                  Annuler
+                </button>
+              </div>
             </div>
           </div>
         </div>

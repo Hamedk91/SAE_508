@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import FormateurSessionDetail from "./FormateurSessionDetail";
 import "../../css/FormateurSession.css";
+import devcard from "../../assets/devcard.png";
 
 export default function FormateurSessions() {
   const token = localStorage.getItem("token");
@@ -39,8 +40,17 @@ export default function FormateurSessions() {
   // Liste des sessions
   return (
     <div className="formateur-sessions">
+       {/* Blobs de fond */}
+    <div className="bg-blur-wrapper">
+      <div className="blur-blob blob-blue"></div>
+      <div className="blur-blob blob-pink"></div>
+    </div>
+
       <h2>Mes sessions</h2>
+      <p>Visualisez l'ensemble de vos interventions</p>
+
       {sessions.length === 0 && <p>Aucune session trouvée</p>}
+      
       <div className="sessions-grid">
         {sessions.map(s => (
           <div
@@ -48,12 +58,22 @@ export default function FormateurSessions() {
             className="session-card"
             onClick={() => setSelectedSession(s)}
           >
-            <h3>{s.formation?.titre || "Formation inconnue"}</h3>
-            <p>📍 {s.lieu || "Lieu non précisé"}</p>
-            <p>
-              📅 {s.dateDebut ? new Date(s.dateDebut).toLocaleDateString() : "?"} →{" "}
-              {s.dateFin ? new Date(s.dateFin).toLocaleDateString() : "?"}
-            </p>
+            <img 
+              src={devcard} 
+              alt={s.formation?.titre || "Formation"} 
+              className="session-card-image"
+            />
+            <div className="session-card-content">
+              <h3 className="session-card-title">
+                {s.formation?.titre || "Formation inconnue"}
+              </h3>
+              <div className="session-card-location">
+                {s.lieu || "Lieu non précisé"}
+              </div>
+              <div className="session-card-date">
+                {s.dateDebut ? new Date(s.dateDebut).toLocaleDateString("fr-FR") : "Date non définie"}
+              </div>
+            </div>
           </div>
         ))}
       </div>
