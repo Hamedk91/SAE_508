@@ -10,30 +10,38 @@ export default function Navbar({ onLogout }) {
       <div className="navbar-container">
         {/* Logo à gauche */}
         <div className="navbar-left">
-          <h1 className="navbar-logo">TXL<span>FORMA</span></h1>
+          <h1 className="navbar-logo">
+            TXL<span>FORMA</span>
+          </h1>
         </div>
 
         {/* Liens de navigation centrés */}
         <div className="navbar-center">
-          <Link 
+          <Link
             to="/dashboard/home"
             className={`nav-link ${currentPath === "/dashboard/home" ? "active" : ""}`}
           >
             Accueil
           </Link>
-          <Link 
+          <Link
             to="/dashboard/catalogue"
             className={`nav-link ${currentPath === "/dashboard/catalogue" ? "active" : ""}`}
           >
             Catalogue
           </Link>
-          <Link 
+          <Link
             to="/dashboard/mes-formations"
             className={`nav-link ${currentPath === "/dashboard/mes-formations" ? "active" : ""}`}
           >
             Mes formations
           </Link>
-          <Link 
+          <Link
+            to="/dashboard/panier"
+            className={`nav-link ${currentPath === "/dashboard/panier" ? "active" : ""}`}
+          >
+            Panier 🛒
+          </Link>
+          <Link
             to="/dashboard/profil"
             className={`nav-link ${currentPath === "/dashboard/profil" ? "active" : ""}`}
           >
