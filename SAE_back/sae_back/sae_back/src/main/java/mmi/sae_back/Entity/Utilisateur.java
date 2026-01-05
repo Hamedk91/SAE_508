@@ -9,8 +9,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "dtype")
+@DiscriminatorValue("UTILISATEUR")
 public class Utilisateur {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,4 +22,3 @@ public class Utilisateur {
     private String motDePasse;
     private LocalDate dateInscription;
 }
-

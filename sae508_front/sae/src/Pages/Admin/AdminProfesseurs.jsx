@@ -62,10 +62,18 @@ export default function AdminProfesseurs() {
         ? `http://localhost:8080/api/formateurs/${currentFormateur.id}`
         : "http://localhost:8080/api/formateurs";
 
+      // On envoie seulement nom, prenom, email, statut
+      const payload = {
+        nom: formData.nom,
+        prenom: formData.prenom,
+        email: formData.email,
+        statut: formData.statut,
+      };
+
       const res = await fetch(url, {
         method,
         headers: authHeader,
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) throw new Error("Erreur");
@@ -95,16 +103,12 @@ export default function AdminProfesseurs() {
 
   return (
     <div className="admin-professeurs-container">
-      
-      {/* --- FOND FLOU (Arrière-plan) --- */}
       <div className="bg-blur-wrapper">
         <div className="blur-blob blob-cyan"></div>
         <div className="blur-blob blob-purple"></div>
       </div>
 
-      {/* --- CONTENU --- */}
       <h2 className="admin-professeurs-title">Formateurs</h2>
-
       {error && <div className="admin-error">{error}</div>}
 
       <div className="admin-professeurs-table-card">
@@ -148,7 +152,6 @@ export default function AdminProfesseurs() {
         Ajouter un formateur
       </button>
 
-      {/* --- MODALE --- */}
       {modalVisible && (
         <div className="admin-modal-backdrop" onClick={closeModal}>
           <div className="admin-modal" onClick={(e) => e.stopPropagation()}>

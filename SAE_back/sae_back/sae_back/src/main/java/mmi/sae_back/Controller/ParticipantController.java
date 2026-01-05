@@ -38,7 +38,6 @@ public class ParticipantController {
     }
 
     /* ===================== UTILS ===================== */
-
     private Long getUserIdFromToken(String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new RuntimeException("Token manquant");
@@ -48,7 +47,6 @@ public class ParticipantController {
     }
 
     /* ===================== PROFIL ===================== */
-
     @GetMapping("/profil")
     public Utilisateur getProfil(@RequestHeader("Authorization") String auth) {
         Long userId = getUserIdFromToken(auth);
@@ -57,24 +55,17 @@ public class ParticipantController {
     }
 
     /* ===================== MES FORMATIONS ===================== */
-
     @GetMapping("/formations")
-    public List<FormationDTO> getMesFormations(
-            @RequestHeader("Authorization") String auth
-    ) {
+    public List<FormationDTO> getMesFormations(@RequestHeader("Authorization") String auth) {
         Long userId = getUserIdFromToken(auth);
 
-        List<Inscription> inscriptions =
-                inscriptionRepository.findByParticipant_Id(userId);
+        List<Inscription> inscriptions = inscriptionRepository.findByParticipant_Id(userId);
 
-        if (inscriptions.isEmpty()) {
-            return new ArrayList<>();
-        }
+        if (inscriptions.isEmpty()) return new ArrayList<>();
 
         Map<Long, FormationDTO> formationMap = new HashMap<>();
 
         for (Inscription inscription : inscriptions) {
-
             SessionFormation session = inscription.getSession();
             if (session == null || session.getFormation() == null) continue;
 
@@ -91,17 +82,22 @@ public class ParticipantController {
             sessionDTO.setId(session.getId());
             sessionDTO.setDateDebut(session.getDateDebut());
             sessionDTO.setDateFin(session.getDateFin());
+            sessionDTO.setLieu(session.getLieu());
+            sessionDTO.setStatut(session.getStatut());
 
-            formationMap.get(formationId)
-                    .getSessions()
-                    .add(sessionDTO);
+            sessionDTO.setNote(
+                    inscription.getNotes() == null || inscription.getNotes().isEmpty()
+                            ? null
+                            : inscription.getNotes().get(0).getValeur()
+            );
+
+            formationMap.get(formationId).getSessions().add(sessionDTO);
         }
 
         return new ArrayList<>(formationMap.values());
     }
 
     /* ===================== NOTES D’UNE SESSION ===================== */
-
     @GetMapping("/sessions/{sessionId}/notes")
     public List<Note> mesNotes(
             @RequestHeader("Authorization") String auth,
@@ -117,7 +113,6 @@ public class ParticipantController {
     }
 
     /* ===================== DÉSINSCRIPTION ===================== */
-
     @DeleteMapping("/inscriptions/{sessionId}")
     public ResponseEntity<String> desinscrire(
             @RequestHeader("Authorization") String auth,
@@ -138,5 +133,39 @@ public class ParticipantController {
         }
 
         return ResponseEntity.ok("Désinscription réussie");
+    }
+
+    /* ===================== INSCRIPTION À UNE SESSION ===================== */
+    @PostMapping("/sessions/{sessionId}/inscrire")
+    public ResponseEntity<String> inscrire(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable Long sessionId
+    ) {
+        Long userId = getUserIdFromToken(auth);
+
+        Utilisateur participant = utilisateurRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        SessionFormation session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new RuntimeException("Session non trouvée"));
+
+        if (session.getPlacesRestantes() <= 0) {
+            return ResponseEntity.badRequest().body("Plus de places disponibles");
+        }
+
+        boolean alreadyInscrit = inscriptionRepository.findByParticipant_IdAndSession_Id(userId, sessionId).isPresent();
+        if (alreadyInscrit) {
+            return ResponseEntity.badRequest().body("Vous êtes déjà inscrit à cette session");
+        }
+
+        Inscription inscription = new Inscription();
+        inscription.setParticipant(participant);
+        inscription.setSession(session);
+        inscriptionRepository.save(inscription);
+
+        session.setPlacesRestantes(session.getPlacesRestantes() - 1);
+        sessionRepository.save(session);
+
+        return ResponseEntity.ok("Inscription réussie !");
     }
 }

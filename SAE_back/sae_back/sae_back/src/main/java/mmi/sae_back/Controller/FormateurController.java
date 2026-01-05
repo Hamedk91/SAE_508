@@ -2,8 +2,10 @@ package mmi.sae_back.Controller;
 
 import mmi.sae_back.Entity.Formateur;
 import mmi.sae_back.Repository.FormateurRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -12,10 +14,11 @@ import java.util.List;
 public class FormateurController {
 
     private final FormateurRepository formateurRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    // Injection via constructeur
     public FormateurController(FormateurRepository formateurRepository) {
         this.formateurRepository = formateurRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @GetMapping("/dashboard")
@@ -30,6 +33,10 @@ public class FormateurController {
 
     @PostMapping("/formateurs")
     public Formateur addFormateur(@RequestBody Formateur f) {
+        // Mot de passe par défaut = "12345" hashé
+        f.setMotDePasse(passwordEncoder.encode("12345"));
+        f.setRole("FORMATEUR");
+        f.setDateInscription(LocalDate.now());
         return formateurRepository.save(f);
     }
 
@@ -39,6 +46,7 @@ public class FormateurController {
         existing.setNom(f.getNom());
         existing.setPrenom(f.getPrenom());
         existing.setEmail(f.getEmail());
+        // On ne modifie pas le mot de passe par défaut ici
         return formateurRepository.save(existing);
     }
 
