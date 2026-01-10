@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../../css/Profil.css";
+import profilIcon from "../../assets/profil.png";
 
 export default function Profil() {
   const [user, setUser] = useState(null);

@@ -79,10 +79,7 @@ export default function Login({ onLogin }) {
             {error && <p className="login-error">{error}</p>}
           </form>
 
-          <p className="login-signup">
-            Pas de compte ?{" "}
-            <span className="login-signup-link">Inscrivez-vous</span>
-          </p>
+          
         </div>
       </div>
     </div>
