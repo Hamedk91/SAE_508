@@ -23,24 +23,36 @@ export default function Navbar({ onLogout }) {
           >
             Accueil
           </Link>
+
           <Link
             to="/dashboard/catalogue"
             className={`nav-link ${currentPath === "/dashboard/catalogue" ? "active" : ""}`}
           >
             Catalogue
           </Link>
+
           <Link
             to="/dashboard/mes-formations"
             className={`nav-link ${currentPath === "/dashboard/mes-formations" ? "active" : ""}`}
           >
             Mes formations
           </Link>
+
+          {/* ✅ LIEN SALLE 3D CORRECT */}
+          <Link
+            to="/dashboard/salle-3d"
+            className={`nav-link ${currentPath === "/dashboard/salle-3d" ? "active" : ""}`}
+          >
+            Salle 3D
+          </Link>
+
           <Link
             to="/dashboard/panier"
             className={`nav-link ${currentPath === "/dashboard/panier" ? "active" : ""}`}
           >
             Panier 🛒
           </Link>
+
           <Link
             to="/dashboard/profil"
             className={`nav-link ${currentPath === "/dashboard/profil" ? "active" : ""}`}
